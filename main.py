@@ -221,7 +221,7 @@ async def tb_command(_, message: Message):
 
 
 # help command
-@app.on_message(filters.command(help) & subscribed)
+@app.on_message(filters.command("help") & subscribed)
 def send_help(
     client: Client,
     message: Message,
