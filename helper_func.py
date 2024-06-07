@@ -1,5 +1,3 @@
-#(©)Codexbotz
-
 import base64
 import re
 import asyncio
@@ -8,37 +6,44 @@ from pyrogram.enums import ChatMemberStatus
 from pyrogram.errors.exceptions.bad_request_400 import UserNotParticipant
 from pyrogram.errors import FloodWait
 
+# Define the constants
 FORCE_SUB_CHANNEL = "-1002068728840"
-ADMINS = "6140468904"
+ADMINS = ["6140468904"]  # Convert to list for proper admin check
+
+# Check if the user is subscribed to the FORCE_SUB_CHANNEL
 async def is_subscribed(filter, client, update):
     if not FORCE_SUB_CHANNEL:
         return True
-    user_id = update.from_user.id
+    user_id = str(update.from_user.id)  # Convert user_id to string
     if user_id in ADMINS:
         return True
     try:
-        member = await client.get_chat_member(chat_id = FORCE_SUB_CHANNEL, user_id = user_id)
+        member = await client.get_chat_member(chat_id=FORCE_SUB_CHANNEL, user_id=update.from_user.id)
     except UserNotParticipant:
         return False
-
-    if not member.status in [ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.MEMBER]:
+    except Exception as e:
+        # Log the exception
+        print(f"Error checking subscription: {e}")
         return False
-    else:
-        return True
 
+    return member.status in [ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.MEMBER]
+
+# Encode a string to a URL-safe base64 string
 async def encode(string):
     string_bytes = string.encode("ascii")
     base64_bytes = base64.urlsafe_b64encode(string_bytes)
-    base64_string = (base64_bytes.decode("ascii")).strip("=")
+    base64_string = base64_bytes.decode("ascii").strip("=")
     return base64_string
 
+# Decode a URL-safe base64 string to a regular string
 async def decode(base64_string):
-    base64_string = base64_string.strip("=") # links generated before this commit will be having = sign, hence striping them to handle padding errors.
+    base64_string = base64_string.strip("=")  # Handle padding errors
     base64_bytes = (base64_string + "=" * (-len(base64_string) % 4)).encode("ascii")
-    string_bytes = base64.urlsafe_b64decode(base64_bytes) 
+    string_bytes = base64.urlsafe_b64decode(base64_bytes)
     string = string_bytes.decode("ascii")
     return string
 
+# Fetch messages given a list of message IDs
 async def get_messages(client, message_ids):
     messages = []
     total_messages = 0
@@ -55,12 +60,14 @@ async def get_messages(client, message_ids):
                 chat_id=client.db_channel.id,
                 message_ids=temb_ids
             )
-        except:
-            pass
+        except Exception as e:
+            print(f"Error fetching messages: {e}")
+            break
         total_messages += len(temb_ids)
         messages.extend(msgs)
     return messages
 
+# Get the message ID from a forwarded message or text containing a link
 async def get_message_id(client, message):
     if message.forward_from_chat:
         if message.forward_from_chat.id == client.db_channel.id:
@@ -71,7 +78,7 @@ async def get_message_id(client, message):
         return 0
     elif message.text:
         pattern = "https://t.me/(?:c/)?(.*)/(\d+)"
-        matches = re.match(pattern,message.text)
+        matches = re.match(pattern, message.text)
         if not matches:
             return 0
         channel_id = matches.group(1)
@@ -82,10 +89,9 @@ async def get_message_id(client, message):
         else:
             if channel_id == client.db_channel.username:
                 return msg_id
-    else:
-        return 0
+    return 0
 
-
+# Convert seconds to a readable time format
 def get_readable_time(seconds: int) -> str:
     count = 0
     up_time = ""
@@ -107,5 +113,6 @@ def get_readable_time(seconds: int) -> str:
     up_time += ":".join(time_list)
     return up_time
 
-
+# Create a filter for checking subscription
 subscribed = filters.create(is_subscribed)
+        
