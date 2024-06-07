@@ -192,9 +192,8 @@ def loopthread(message: Message, otherss=False):
         )
 
 
-# start command
 @app.on_message(filters.command(["start"]))
-def send_start(client: pyrogram.Client, message: pyrogram.types.Message):
+def send_start(client: Client, message: Message):
     app.send_photo(
         chat_id=message.chat.id,
         photo="https://mallucampaign.in/images/img_1715788080.jpg",
