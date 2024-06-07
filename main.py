@@ -35,6 +35,7 @@ with app:
         [
             BotCommand("start", "Welcome Message"),
             BotCommand("help", "List of All Supported Sites"),
+            BotCommand("tb", "Foe bypassing terabox link"),
         ]
     )
 
