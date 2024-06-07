@@ -36,7 +36,8 @@ with app:
         [
             BotCommand("start", "Welcome Message"),
             BotCommand("help", "List of All Supported Sites"),
-            BotCommand("tb", "Foe bypassing terabox link"),
+            BotCommand("tb", "For bypassing terabox link"),
+            BotCommand("bp", "For bypassing other link"),
         ]
     )
 
@@ -235,7 +236,7 @@ def send_help(
 
 
 # links
-@app.on_message(filters.text)
+@app.on_message(filters.command("bp") & subscribed)
 def receive(
     client: Client,
     message: Message,
