@@ -194,31 +194,29 @@ def loopthread(message: Message, otherss=False):
 
 # start command
 @app.on_message(filters.command(["start"]))
-def send_start(
-    client: Client,
-    message: Message,
-):
-    app.send_message(
-        message.chat.id,
-        f"__👋 Hi **{message.from_user.mention}**, i am Link Bypasser Bot, just send me any supported links and i will you get you results.\nCheckout /help to Read More__",
-        reply_markup=InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton(
-                        "🌐 Source Code",
-                        url="https://github.com/bipinkrish/Link-Bypasser-Bot",
-                    )
-                ],
-                [
-                    InlineKeyboardButton(
-                        "Replit",
-                        url="https://replit.com/@bipinkrish/Link-Bypasser#app.py",
-                    )
-                ],
-            ]
-        ),
-        reply_to_message_id=message.id,
+def send_start(client: pyrogram.Client, message: pyrogram.types.Message):
+    app.send_photo(
+        chat_id=message.chat.id,
+        photo="https://mallucampaign.in/images/img_1715788080.jpg",
+        caption="__👋 Hi there! I am Link Bypasser Bot.__\n\nJust send me any supported links and I will get you results. Use /help for more info.",
+        reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton("Developer 🎓", url="https://t.me/TryToLiveAlon"), InlineKeyboardButton("Updates Channel ♻️", url="https://t.me/deathking_botworld")]
+        ]),
     )
+
+# /tb 
+@app.on_message(filters.command(["tb"]))
+async def tb_command(_, message: Message):
+    terabox_url = message.text.split('/tb')[1].strip()
+    api_url = f"https://expressional-leaper.000webhostapp.com/terabox.php?url={terabox_url}"
+
+    try:
+        response = requests.get(api_url).json()
+        fast_download_link = response['response'][0]['resolutions']['Fast Download']
+        await message.reply(fast_download_link)
+    except Exception as e:
+        await message.reply(f"Error: {e}")
+
 
 
 # help command
