@@ -7,7 +7,7 @@ tgcrypto
 lxml
 cfscrape
 urllib3==1.26
-request
+requests==2.31.0
 flask
 gunicorn
 curl-cffi
