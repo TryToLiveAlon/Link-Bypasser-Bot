@@ -15,6 +15,7 @@ import bypasser
 import freewall
 from time import time
 from db import DB
+from helper_func import subscribed
 
 
 # bot
@@ -193,7 +194,7 @@ def loopthread(message: Message, otherss=False):
         )
 
 
-@app.on_message(filters.command(["start"]))
+@app.on_message(filters.command("start") & subscribed)
 def send_start(client: Client, message: Message):
     app.send_photo(
         chat_id=message.chat.id,
@@ -205,7 +206,7 @@ def send_start(client: Client, message: Message):
     )
 
 # /tb 
-@app.on_message(filters.command(["tb"]))
+@app.on_message(filters.command(tb) & subscribed)
 async def tb_command(_, message: Message):
     terabox_url = message.text.split('/tb')[1].strip()
     api_url = f"https://expressional-leaper.000webhostapp.com/terabox.php?url={terabox_url}"
@@ -220,7 +221,7 @@ async def tb_command(_, message: Message):
 
 
 # help command
-@app.on_message(filters.command(["help"]))
+@app.on_message(filters.command(help) & subscribed)
 def send_help(
     client: Client,
     message: Message,
