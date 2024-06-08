@@ -200,7 +200,7 @@ def send_start(client: Client, message: Message):
     app.send_photo(
         chat_id=message.chat.id,
         photo="https://mallucampaign.in/images/img_1715788080.jpg",
-        caption="__👋 Hi there! I am Link Bypasser Bot.__\n\nJust send me any supported links and I will get you results. Use /help for more info.\n\n Must Join Update Channel",
+        caption="__👋 Hi there! I am Link Terabox  Downloader Bot.__\n\nJust send me any terabox links and I will get you results.Go to chatting group for more info.\n\n Must Join Update Channel",
         reply_markup=InlineKeyboardMarkup([
             [InlineKeyboardButton("Developer 🎓", url="https://t.me/TryToLiveAlon"), InlineKeyboardButton("Updates Channel ♻️", url="https://t.me/deathking_worldd")]
         ]),
