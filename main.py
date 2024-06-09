@@ -203,19 +203,21 @@ def send_start(client: Client, message: Message):
         ]),
     )
 
-# /tb 
-@app.on_message(filters.text & filters.private & subscribed)
-async def tb_command(_, message: Message):
+
+@app.on_message(filters.text & filters.private)
+async def tb_command(client, message):
     terabox_url = message.text
     api_url = f"https://expressional-leaper.000webhostapp.com/terabox.php?url={terabox_url}"
 
     try:
         response = requests.get(api_url).json()
-        fast_download_link = response['response'][0]['resolutions']['Fast Download']
-        await message.reply(fast_download_link)
+        fast_download_link = response.get('response', [{}])[0].get('resolutions', {}).get('Fast Download', '')
+        if fast_download_link:
+            await message.reply_text(fast_download_link)
+        else:
+            await message.reply_text("No fast download link found.")
     except Exception as e:
-        await message.reply(f"Error: {e}")
-
+        await message.reply_text(f"An error occurred: {e}")
 
 
 # help command
