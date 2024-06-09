@@ -7,7 +7,7 @@ from pyrogram.errors.exceptions.bad_request_400 import UserNotParticipant
 from pyrogram.errors import FloodWait
 
 # Define the constants
-FORCE_SUB_CHANNEL = "-1002068728840"
+FORCE_SUB_CHANNEL = "-1001986492722"
 ADMINS = ["6140468904"]  # Convert to list for proper admin check
 
 # Check if the user is subscribed to the FORCE_SUB_CHANNEL
