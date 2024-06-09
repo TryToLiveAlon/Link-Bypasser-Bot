@@ -34,10 +34,7 @@ app = Client("my_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
 with app:
     app.set_bot_commands(
         [
-            BotCommand("start", "Welcome Message"),
-            BotCommand("help", "List of All Supported Sites"),
-            BotCommand("tb", "For bypassing terabox link"),
-            BotCommand("bp", "For bypassing other link"),
+            BotCommand("start", "Check if bot is alive or not"),
         ]
     )
 
@@ -199,7 +196,7 @@ def loopthread(message: Message, otherss=False):
 def send_start(client: Client, message: Message):
     app.send_photo(
         chat_id=message.chat.id,
-        photo="https://mallucampaign.in/images/img_1715788080.jpg",
+        photo="https://mallucampaign.in/images/img_1717953566.jpg",
         caption="__👋 Hi there! I am Link Terabox  Downloader Bot.__\n\nJust send me any terabox links and I will get you results.Go to chatting group for more info.\n\n Must Join Update Channel",
         reply_markup=InlineKeyboardMarkup([
             [InlineKeyboardButton("Developer 🎓", url="https://t.me/TryToLiveAlon"), InlineKeyboardButton("Updates Channel ♻️", url="https://t.me/deathking_worldd")]
@@ -209,7 +206,7 @@ def send_start(client: Client, message: Message):
 # /tb 
 @app.on_message(filters.text & filters.private & subscribed)
 async def tb_command(_, message: Message):
-    terabox_url = message.text.split('/tb')[1].strip()
+    terabox_url = message.text
     api_url = f"https://expressional-leaper.000webhostapp.com/terabox.php?url={terabox_url}"
 
     try:
