@@ -206,11 +206,11 @@ def send_start(client: Client, message: Message):
 BOT_TOKEN = bot_token
 
 # Replace with the required chat IDs
-CHAT_IDS = ["-1002239078679", "-1002047318388"]
+CHAT_IDS = "-1001525395841,-1002068728840,-1002134939841"
 
 # Function to check if user has joined required groups
 def is_user_joined_required_groups(user_id):
-    api_url = f"https://api.jobians.top/telegram/getChatMember.php?bot_token={BOT_TOKEN}&user_id={user_id}&chat_id={','.join(CHAT_IDS)}"
+    api_url = f"https://api.jobians.top/telegram/getChatMember.php?bot_token={BOT_TOKEN}&user_id={user_id}&chat_id={CHAT_IDS}"
     
     try:
         response = requests.get(api_url)
