@@ -269,14 +269,6 @@ def send_help(
 
 
 # links
-@app.on_message(filters.co.mmand("bp") & subscribed)
-def receive(
-    client: Client,
-    message: Message,
-):
-    bypass = Thread(target=lambda: loopthread(message), daemon=True)
-    bypass.start()
-
 
 # doc thread
 def docthread(message: Message):
