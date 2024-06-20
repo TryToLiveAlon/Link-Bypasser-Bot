@@ -203,10 +203,34 @@ def send_start(client: Client, message: Message):
         ]),
     )
 
+BOT_TOKEN = "your_bot_token_here"
 
+# Replace with the required chat IDs
+CHAT_IDS = ["-1002239078679", "-1002047318388"]
+
+# Function to check if user has joined required groups
+def is_user_joined_required_groups(user_id):
+    api_url = f"https://api.jobians.top/telegram/getChatMember.php?bot_token={BOT_TOKEN}&user_id={user_id}&chat_id={','.join(CHAT_IDS)}"
+    
+    try:
+        response = requests.get(api_url)
+        if response.status_code == 200:
+            data = response.json()
+            if data.get("status") == "true":
+                return data.get("is_joined", False)
+    except Exception as e:
+        logger.exception("Error checking group membership: %s", e)
+    
+    return False
 
 @app.on_message(filters.command("bp"))
 async def tb_command(client, message):
+    user_id = message.from_user.id
+    
+    if not is_user_joined_required_groups(user_id):
+        await message.reply_text("Please join the required groups to use this bot.")
+        return
+    
     try:
         # Extract the URL from the message text
         terabox_url = message.text.split()[1]
