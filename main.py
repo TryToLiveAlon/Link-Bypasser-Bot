@@ -203,7 +203,7 @@ def send_start(client: Client, message: Message):
         ]),
     )
 
-BOT_TOKEN = "your_bot_token_here"
+BOT_TOKEN = bot_token
 
 # Replace with the required chat IDs
 CHAT_IDS = ["-1002239078679", "-1002047318388"]
