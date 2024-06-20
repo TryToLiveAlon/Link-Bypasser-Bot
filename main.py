@@ -204,21 +204,31 @@ def send_start(client: Client, message: Message):
     )
 
 
-@app.on_message(filters.text & filters.private)
-async def tb_command(client, message):
-    terabox_url = message.text
-    api_url = f"https://expressional-leaper.000webhostapp.com/terabox.php?url={terabox_url}"
 
+@app.on_message(filters.command("bp"))
+async def tb_command(client, message):
     try:
+        # Extract the URL from the message text
+        terabox_url = message.text.split()[1]
+        api_url = f"https://expressional-leaper.000webhostapp.com/terabox.php?url={terabox_url}"
+        
+        # Make a request to the API
         response = requests.get(api_url).json()
+        
+        # Extract the fast download link from the response
         fast_download_link = response.get('response', [{}])[0].get('resolutions', {}).get('Fast Download', '')
+        
+        # Send the fast download link as a response or handle the case where it's not found
         if fast_download_link:
             await message.reply_text(fast_download_link)
         else:
             await message.reply_text("No fast download link found.")
+    except IndexError:
+        # Handle the case where the URL is not provided in the message
+        await message.reply_text("Please provide a URL in the format: /bp https://teraboxapp.com/s/1RURVVHwUnXVTSQju_AXX8g")
     except Exception as e:
+        # Handle any other exceptions
         await message.reply_text(f"An error occurred: {e}")
-
 
 # help command
 @app.on_message(filters.command("help") & subscribed)
@@ -235,7 +245,7 @@ def send_help(
 
 
 # links
-@app.on_message(filters.command("bp") & subscribed)
+@app.on_message(filters.co.mmand("bp") & subscribed)
 def receive(
     client: Client,
     message: Message,
